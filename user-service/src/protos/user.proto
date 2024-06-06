@@ -1,0 +1,79 @@
+syntax = "proto3";
+package user_package;
+
+service User {
+  rpc CreateUser (CreateUserRequest) returns (UserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (UserResponse);
+  rpc ListUsers (Empty) returns (ListUsersResponse);
+  rpc SearchUser (SearchUserRequest) returns (ListUsersResponse);
+  rpc FollowUser(UserIdRequest) returns (FollowResponse);
+  rpc UnfollowUser(UserIdRequest) returns (FollowResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc GetUser(GetUserRequest) returns(ListUsersResponse);
+}
+
+message GetUserRequest{
+  string username = 1;
+}
+
+message LoginRequest{
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse{
+  string message = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+}
+
+message UserIdRequest {
+  string follower_id = 1;
+  string followee_id = 2;
+}
+
+message FollowResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message Userr {
+  string id = 1;
+  string username = 2;
+  string mobile = 3;
+  string email = 4;
+  string password = 7;
+  repeated string followings = 5;
+  repeated string followers = 6;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string mobile = 2;
+  string email = 3;
+  string password = 4;
+}
+
+message UpdateUserRequest {
+  string user_id = 1;
+  string username = 2;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message SearchUserRequest {
+  string name = 1;
+}
+
+message UserResponse {
+  string message = 1;
+}
+
+message ListUsersResponse {
+  repeated Userr users = 1;
+}
+
+message Empty {}

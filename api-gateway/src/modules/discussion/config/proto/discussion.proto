@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package discussion_package;
+
+service DiscussionService {
+  rpc CreateDiscussion (CreateDiscussionRequest) returns (DiscussionResponse);
+  rpc UpdateDiscussion (UpdateDiscussionRequest) returns (DiscussionResponse);
+  rpc DeleteDiscussion (DeleteDiscussionRequest) returns (Response);
+  rpc GetListByTags (GetListByTagsRequest) returns (ListDiscussionsResponse);
+  rpc GetListByText (GetListByTextRequest) returns (ListDiscussionsResponse);
+  rpc AddComment (AddCommentRequest) returns (CommentResponse);
+  rpc UpdateComment (UpdateCommentRequest) returns (CommentResponse);
+  rpc DeleteComment (DeleteCommentRequest) returns (Response);
+  rpc LikeDiscussion (LikeDiscussionRequest) returns (Response);
+  rpc LikeComment (LikeCommentRequest) returns (Response);
+  rpc GetPostViewCount (GetPostViewCountRequest) returns (ViewCountResponse);
+}
+
+message UserLike {
+  string user_id = 1;
+}
+
+message LikeCount {
+  int32 count = 1;
+  repeated UserLike users = 2;
+}
+
+message Discussion {
+  string id = 1;
+  string text = 2;
+  string image = 3;
+  repeated string hashtags = 4;
+  string created_on = 5;
+  int32 view_count = 6;
+  repeated Comment comments = 7;
+  LikeCount like_count = 8; 
+}
+
+message Comment {
+  string id = 1;
+  string discussion_id = 2;
+  string user_id = 3;
+  string text = 4;
+  int32 like_count = 6;
+  repeated Comment replies = 7;
+}
+
+message CreateDiscussionRequest {
+  Discussion discussion = 1;
+  string user_id = 2;
+}
+
+message UpdateDiscussionRequest {
+  string id = 1;
+  Discussion discussion = 2;
+}
+
+message DeleteDiscussionRequest {
+  string id = 1;
+  string user_id = 2;
+}
+
+message GetListByTagsRequest {
+  string tags = 1;
+}
+
+message GetListByTextRequest {
+  string search_text = 1;
+}
+
+message AddCommentRequest {
+  string discussion_id = 1;
+  Comment comment = 2;
+}
+
+message UpdateCommentRequest {
+  string id = 1;
+  Comment comment = 2;
+}
+
+message DeleteCommentRequest {
+  string id = 1;
+}
+
+message LikeDiscussionRequest {
+  string discussion_id = 1;
+  string user_id = 2;
+}
+
+message LikeCommentRequest {
+  string comment_id = 1;
+  string user_id = 2;
+}
+
+message GetPostViewCountRequest {
+  string discussion_id = 1;
+}
+
+message DiscussionResponse {
+  Discussion discussion = 1;
+}
+
+message Response{
+  string message = 1;
+}
+
+message CommentResponse {
+  string message = 1;
+}
+
+message ListDiscussionsResponse {
+  repeated Discussion discussions = 1;
+  string likecount = 2;
+}
+
+message ViewCountResponse {
+  int32 view_count = 1;
+}
+
+message Empty {}
